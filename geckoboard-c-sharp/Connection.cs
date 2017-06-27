@@ -8,6 +8,7 @@ namespace geckoboardcsharp
     public class Connection
     {
         private HttpClient client;
+        private static string URL = "https://api.geckoboard.com/";
 
         public Connection(string apiKey)
         {
@@ -16,24 +17,46 @@ namespace geckoboardcsharp
 
         public HttpResponseMessage Get(string path)
         {
-            return client.GetAsync(path).Result;
+            Console.WriteLine("GET request to " + path);
+
+            var response = client.GetAsync(URL + path).Result;
+            CheckResponseForErrors(response);
+
+            return response;
         }
 
         public HttpResponseMessage Delete(string path)
         {
-            return client.DeleteAsync(path).Result;
+            Console.WriteLine("DELETE request to " + path);
+
+            var response = client.DeleteAsync(URL + path).Result;
+            CheckResponseForErrors(response);
+
+            return response;
         }
 
         public HttpResponseMessage Put(string path, string body)
         {
+            Console.WriteLine("PUT request to " + path);
+            Console.WriteLine("Data: " + body);
             var content = new StringContent(body, Encoding.UTF8, "application/json");
-            return client.PutAsync(path, content).Result;
+
+            var response = client.PutAsync(URL + path, content).Result;
+            CheckResponseForErrors(response);
+
+            return response;
         }
 
         public HttpResponseMessage Post(string path, string body)
         {
+            Console.WriteLine("POST request to " + path);
+            Console.WriteLine("Data: " + body);
 			var content = new StringContent(body, Encoding.UTF8, "application/json");
-            return client.PostAsync(path, content).Result;
+
+            var response = client.PostAsync(URL + path, content).Result;
+            CheckResponseForErrors(response);
+
+            return response;
         }
 
         private void CheckResponseForErrors(HttpResponseMessage response)

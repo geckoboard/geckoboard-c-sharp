@@ -5,7 +5,6 @@ namespace geckoboardcsharp
 {
     public class Client
     {
-        private static string URL = "https://api.geckoboard.com";
         private Connection connection;
 
         public Client(string apiKey)
@@ -14,7 +13,11 @@ namespace geckoboardcsharp
         }
 
         public bool ping() {
-            return connection.Get(URL).IsSuccessStatusCode;
+            return connection.Get("").IsSuccessStatusCode;
+        }
+
+        public DatasetsClient datasets() {
+            return new DatasetsClient(connection);
         }
     }
 }

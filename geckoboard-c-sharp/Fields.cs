@@ -2,6 +2,7 @@
 using System.Web.Script.Serialization;
 using System.Dynamic;
 using System.Collections.Generic;
+using System.Json;
 
 namespace geckoboardcsharp
 {
@@ -20,23 +21,21 @@ namespace geckoboardcsharp
             this.Name = Name;
         }
 
-        public object ToJson()
+        public JsonValue ToJson()
         {
-            var jsonWrapper = new ExpandoObject() as IDictionary<string, Object>;
-
             dynamic json = new ExpandoObject();
             json.name = this.Name;
             json.type = this.Type;
 
-            jsonWrapper[Id] = AddJsonProperties(json);
+            json = AddJsonProperties(json);
 
-            return new JavaScriptSerializer().Serialize(jsonWrapper);
+            return JsonValue.Parse(new JavaScriptSerializer().Serialize(json));
         }
 
-		protected virtual ExpandoObject AddJsonProperties(dynamic json)
-		{
-			return json;
-		}
+        protected virtual ExpandoObject AddJsonProperties(dynamic json)
+        {
+            return json;
+        }
     }
 
     public class OptionalField : Field
@@ -57,60 +56,60 @@ namespace geckoboardcsharp
 
     public class StringField : Field
     {
-		public override string Type
-		{
+        public override string Type
+        {
             get { return "string"; }
-		}
+        }
 
-        public StringField(string Id, string Name) : base(Id, Name) {}
+        public StringField(string Id, string Name) : base(Id, Name) { }
     }
 
     public class NumberField : OptionalField
     {
-		public override string Type
-		{
-			get { return "number"; }
-		}
+        public override string Type
+        {
+            get { return "number"; }
+        }
 
-        public NumberField(string Id, string Name, bool Optional) : base(Id, Name, Optional) {}
+        public NumberField(string Id, string Name, bool Optional) : base(Id, Name, Optional) { }
     }
 
     public class DateField : Field
     {
-		public override string Type
-		{
-			get { return "date"; }
-		}
+        public override string Type
+        {
+            get { return "date"; }
+        }
 
-        public DateField(string Id, string Name) : base(Id, Name) {}
+        public DateField(string Id, string Name) : base(Id, Name) { }
     }
 
-	public class DateTimeField : Field
-	{
-		public override string Type
-		{
-			get { return "datetime"; }
-		}
+    public class DateTimeField : Field
+    {
+        public override string Type
+        {
+            get { return "datetime"; }
+        }
 
-		public DateTimeField(string Id, string Name) : base(Id, Name) {}
-	}
+        public DateTimeField(string Id, string Name) : base(Id, Name) { }
+    }
 
     public class PercentageField : OptionalField
-	{
-		public override string Type
-		{
-			get { return "percentage"; }
-		}
+    {
+        public override string Type
+        {
+            get { return "percentage"; }
+        }
 
-        public PercentageField(string Id, string Name, bool Optional) : base(Id, Name, Optional) {}
-	}
+        public PercentageField(string Id, string Name, bool Optional) : base(Id, Name, Optional) { }
+    }
 
     public class MoneyField : OptionalField
     {
-		public override string Type
-		{
-			get { return "money"; }
-		}
+        public override string Type
+        {
+            get { return "money"; }
+        }
         public string CurrencyCode;
 
         public MoneyField(string Id, string Name, bool Optional, string CurrencyCode) : base(Id, Name, Optional)
@@ -123,11 +122,11 @@ namespace geckoboardcsharp
             this.CurrencyCode = CurrencyCode;
         }
 
-		protected override ExpandoObject AddJsonProperties(dynamic json)
-		{
-			json = base.AddJsonProperties((object)json);
+        protected override ExpandoObject AddJsonProperties(dynamic json)
+        {
+            json = base.AddJsonProperties((object)json);
             json.currency_code = this.CurrencyCode;
-			return json;
-		}
+            return json;
+        }
     }
 }
