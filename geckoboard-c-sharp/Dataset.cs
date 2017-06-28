@@ -53,14 +53,14 @@ namespace geckoboardcsharp
             }
         }
 
-        public bool Put(List<IDictionary<string, object>> data)
+        public bool Put(IEnumerable<IDictionary<string, object>> data)
         {
             client.PutData(this, data);
 
             return true;
         }
 
-        public bool Post(List<IDictionary<string, object>> data, string deleteBy)
+        public bool Post(IEnumerable<IDictionary<string, object>> data, string deleteBy)
         {
             client.PostData(this, data);
 

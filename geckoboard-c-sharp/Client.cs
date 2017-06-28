@@ -12,11 +12,11 @@ namespace geckoboardcsharp
             connection = new Connection(apiKey);
         }
 
-        public bool ping() {
+        public bool Ping() {
             return connection.Get("").IsSuccessStatusCode;
         }
 
-        public DatasetsClient datasets() {
+        public DatasetsClient Datasets() {
             return new DatasetsClient(connection);
         }
     }

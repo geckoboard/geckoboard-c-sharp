@@ -52,7 +52,7 @@ namespace geckoboardcsharp
             return true;
         }
 
-        public bool PutData(Dataset dataset, List<IDictionary<string, object>> data)
+        public bool PutData(Dataset dataset, IEnumerable<IDictionary<string, object>> data)
         {
             string path = "/datasets/" + Uri.EscapeDataString(dataset.Id) + "/data";
 
@@ -61,12 +61,12 @@ namespace geckoboardcsharp
             return true;
         }
 
-        public bool PostData(Dataset dataset, List<IDictionary<string, object>> data)
+        public bool PostData(Dataset dataset, IEnumerable<IDictionary<string, object>> data)
         {
             return PostData(dataset, data, null);
         }
 
-        public bool PostData(Dataset dataset, List<IDictionary<string, object>> data, string deleteBy)
+        public bool PostData(Dataset dataset, IEnumerable<IDictionary<string, object>> data, string deleteBy)
         {
             string path = "/datasets/" + Uri.EscapeUriString(dataset.Id) + "/data";
 
@@ -75,12 +75,12 @@ namespace geckoboardcsharp
             return true;
         }
 
-        public string FormatData(Dataset dataset, List<IDictionary<string, object>> data)
+        public string FormatData(Dataset dataset, IEnumerable<IDictionary<string, object>> data)
         {
             return FormatData(dataset, data, null);
         }
 
-        public string FormatData(Dataset dataset, List<IDictionary<string, object>> data, string deleteBy)
+        public string FormatData(Dataset dataset, IEnumerable<IDictionary<string, object>> data, string deleteBy)
         {
             JsonArray jsonArray = new JsonArray();
 
