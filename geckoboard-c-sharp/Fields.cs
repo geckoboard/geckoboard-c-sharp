@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.Collections.Generic;
 using System.Json;
 
-namespace geckoboardcsharp
+namespace Geckoboard
 {
     public class Field
     {

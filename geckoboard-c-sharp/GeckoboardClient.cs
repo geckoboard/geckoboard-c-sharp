@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace geckoboardcsharp
+namespace Geckoboard
 {
-    public class Client
+    public class GeckoboardClient
     {
         private Connection connection;
 
-        public Client(string apiKey)
+        public GeckoboardClient(string apiKey)
         {
             connection = new Connection(apiKey);
         }

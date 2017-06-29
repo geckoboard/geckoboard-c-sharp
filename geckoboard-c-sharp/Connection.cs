@@ -3,7 +3,7 @@ using System.Text;
 using System.Net.Http;
 using System.Json;
 
-namespace geckoboardcsharp
+namespace Geckoboard
 {
     public class Connection
     {
@@ -17,8 +17,6 @@ namespace geckoboardcsharp
 
         public HttpResponseMessage Get(string path)
         {
-            Console.WriteLine("GET request to " + path);
-
             var response = client.GetAsync(URL + path).Result;
             CheckResponseForErrors(response);
 
@@ -27,8 +25,6 @@ namespace geckoboardcsharp
 
         public HttpResponseMessage Delete(string path)
         {
-            Console.WriteLine("DELETE request to " + path);
-
             var response = client.DeleteAsync(URL + path).Result;
             CheckResponseForErrors(response);
 
@@ -37,8 +33,6 @@ namespace geckoboardcsharp
 
         public HttpResponseMessage Put(string path, string body)
         {
-            Console.WriteLine("PUT request to " + path);
-            Console.WriteLine("Data: " + body);
             var content = new StringContent(body, Encoding.UTF8, "application/json");
 
             var response = client.PutAsync(URL + path, content).Result;
@@ -49,8 +43,6 @@ namespace geckoboardcsharp
 
         public HttpResponseMessage Post(string path, string body)
         {
-            Console.WriteLine("POST request to " + path);
-            Console.WriteLine("Data: " + body);
 			var content = new StringContent(body, Encoding.UTF8, "application/json");
 
             var response = client.PostAsync(URL + path, content).Result;

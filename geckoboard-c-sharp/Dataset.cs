@@ -3,7 +3,7 @@ using System.Json;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace geckoboardcsharp
+namespace Geckoboard
 {
     public class Dataset
     {
@@ -13,7 +13,6 @@ namespace geckoboardcsharp
 
         public Dataset(DatasetsClient client, JsonObject Dataset)
         {
-            Console.WriteLine(Dataset.ToString());
             this.Id = (string)Dataset["id"];
             this.client = client;
             InitialiseFieldsFromJson((JsonObject)Dataset["fields"]);

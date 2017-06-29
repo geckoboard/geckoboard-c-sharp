@@ -3,8 +3,9 @@ using System.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Globalization;
+using System.Web.Script.Serialization;
 
-namespace geckoboardcsharp
+namespace Geckoboard
 {
     public class DatasetsClient
     {
@@ -17,10 +18,10 @@ namespace geckoboardcsharp
 
         public Dataset FindOrCreate(string datasetId, IEnumerable<Field> fields)
         {
-            return FindOrCreate(datasetId, fields, null);
+            return FindOrCreate(datasetId, fields, new string[0]);
         }
 
-        public Dataset FindOrCreate(string datasetId, IEnumerable<Field> fields, string uniqueBy)
+        public Dataset FindOrCreate(string datasetId, IEnumerable<Field> fields, string[] uniqueBy)
         {
             string path = "/datasets/" + Uri.EscapeDataString(datasetId);
             JsonObject json = new JsonObject();
@@ -28,15 +29,14 @@ namespace geckoboardcsharp
 
             foreach (var field in fields)
             {
-                Console.WriteLine(field.Id);
                 jsonFields[field.Id] = field.ToJson();
             }
 
             json["fields"] = jsonFields;
 
-            if (!String.IsNullOrEmpty(uniqueBy))
+            if (uniqueBy.Length > 0)
             {
-                json["unique_by"] = uniqueBy;
+                json["unique_by"] = new JavaScriptSerializer().Serialize(uniqueBy);
             }
 
             var response = connection.Put(path, json.ToString());
@@ -84,38 +84,30 @@ namespace geckoboardcsharp
         {
             JsonArray jsonArray = new JsonArray();
 
-            Console.WriteLine("Starting Data Formatting");
-
             foreach (var dataPoint in data)
             {
                 JsonObject json = new JsonObject();
 
-                Console.WriteLine("Data Point: " + dataPoint.ToString());
                 foreach (var key in dataPoint.Keys)
                 {
                     switch (dataset.Fields[key].Type)
                     {
                         case "date":
-                            Console.WriteLine(key + " is a " + dataset.Fields[key].Type);
                             DateTime date = (DateTime)dataPoint[key];
                             json[dataset.Fields[key].Id] = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                             break;
                         case "datetime":
-                            Console.WriteLine(key + " is a " + dataset.Fields[key].Type);
                             DateTime datetime = (DateTime)dataPoint[key];
                             json[dataset.Fields[key].Id] = datetime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
                             break;
                         case "number":
                         case "money":
-                            Console.WriteLine(key + " is a " + dataset.Fields[key].Type);
                             json[dataset.Fields[key].Id] = (int)dataPoint[key];
                             break;
 						case "string":
-                            Console.WriteLine(key + " is a " + dataset.Fields[key].Type);
                             json[dataset.Fields[key].Id] = (string)dataPoint[key];
 							break;
 						case "percentage":
-                            Console.WriteLine(key + " is a " + dataset.Fields[key].Type);
                             json[dataset.Fields[key].Id] = (double)dataPoint[key];
 							break;
                     }
@@ -131,8 +123,6 @@ namespace geckoboardcsharp
             {
                 wrapper["delete_by"] = deleteBy;
             }
-
-			Console.WriteLine("Formatted Data: " + wrapper.ToString());
 
             return wrapper.ToString();
         }
