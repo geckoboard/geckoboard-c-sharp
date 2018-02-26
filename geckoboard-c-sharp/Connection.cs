@@ -10,9 +10,9 @@ namespace Geckoboard
         private HttpClient client;
         private static string URL = "https://api.geckoboard.com/";
 
-        public Connection(string apiKey)
+        public Connection(string apiKey, HttpClient httpClient = null)
         {
-            initialiseHttpClient(apiKey);
+            initialiseHttpClient(apiKey, httpClient);
         }
 
         public HttpResponseMessage Get(string path)
@@ -84,9 +84,9 @@ namespace Geckoboard
 			}
         }
 
-        private void initialiseHttpClient(string apiKey)
+        private void initialiseHttpClient(string apiKey, HttpClient httpClient)
         {
-			client = new HttpClient();
+			client = httpClient ?? new HttpClient();
 			var byteArray = Encoding.ASCII.GetBytes(apiKey + ":");
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
