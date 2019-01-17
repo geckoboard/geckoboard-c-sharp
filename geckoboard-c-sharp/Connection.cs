@@ -17,7 +17,7 @@ namespace Geckoboard
 
         public HttpResponseMessage Get(string path)
         {
-            var response = client.GetAsync(URL + path).Result;
+            var response = client.GetAsync(GetFullPath(path)).Result;
             CheckResponseForErrors(response);
 
             return response;
@@ -25,7 +25,7 @@ namespace Geckoboard
 
         public HttpResponseMessage Delete(string path)
         {
-            var response = client.DeleteAsync(URL + path).Result;
+            var response = client.DeleteAsync(GetFullPath(path)).Result;
             CheckResponseForErrors(response);
 
             return response;
@@ -35,7 +35,7 @@ namespace Geckoboard
         {
             var content = new StringContent(body, Encoding.UTF8, "application/json");
 
-            var response = client.PutAsync(URL + path, content).Result;
+            var response = client.PutAsync(GetFullPath(path), content).Result;
             CheckResponseForErrors(response);
 
             return response;
@@ -45,7 +45,7 @@ namespace Geckoboard
         {
 			var content = new StringContent(body, Encoding.UTF8, "application/json");
 
-            var response = client.PostAsync(URL + path, content).Result;
+            var response = client.PostAsync(GetFullPath(path), content).Result;
             CheckResponseForErrors(response);
 
             return response;
@@ -61,8 +61,8 @@ namespace Geckoboard
 
             if (IsValidJson(jsonResponse))
             {
-                var ParsedResponse = JsonValue.Parse(jsonResponse);
-                errorMessage = ParsedResponse["error"]["message"];
+                var parsedResponse = JsonValue.Parse(jsonResponse);
+                errorMessage = parsedResponse["error"]["message"];
             }
             else
             {
@@ -75,7 +75,7 @@ namespace Geckoboard
         private bool IsValidJson(string json) {
 			try
 			{
-                var ParsedResponse = JsonValue.Parse(json);
+                var parsedResponse = JsonValue.Parse(json);
                 return true;
 			}
 			catch (FormatException)
@@ -90,5 +90,7 @@ namespace Geckoboard
 			var byteArray = Encoding.ASCII.GetBytes(apiKey + ":");
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
+
+        private static string GetFullPath(string path) => URL.TrimEnd('/') + '/' + path.TrimStart('/');
     }
 }
