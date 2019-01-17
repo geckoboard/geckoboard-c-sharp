@@ -2,6 +2,7 @@
 using System.Json;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 namespace Geckoboard
@@ -130,6 +131,17 @@ namespace Geckoboard
             }
 
             return wrapper.ToString();
+        }
+    }
+
+    public static class DatasetClientExtensions
+    {
+        public static string ToValidDatasetName(this string name)
+        {
+            var replaceSpaces = name.ToLowerInvariant().Replace(" ", "_");
+            Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+            var result = rgx.Replace(replaceSpaces, "_");
+            return result;
         }
     }
 }
