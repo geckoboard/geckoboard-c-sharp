@@ -73,15 +73,19 @@ namespace Geckoboard
         }
 
         private bool IsValidJson(string json) {
-			try
-			{
+            try
+            {
                 var parsedResponse = JsonValue.Parse(json);
                 return true;
-			}
-			catch (FormatException)
-			{
+            }
+            catch (FormatException)
+            {
                 return false;
-			}
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private void initialiseHttpClient(string apiKey, HttpClient httpClient)
