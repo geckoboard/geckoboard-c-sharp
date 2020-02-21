@@ -8,24 +8,24 @@ namespace Geckoboard
 {
     public class Field
     {
-        public string Id;
-        public string Name;
-        public virtual string Type
+        public string id;
+        public string name;
+        public virtual string type
         {
             get { return ""; }
         }
 
         public Field(string Id, string Name)
         {
-            this.Id = Id;
-            this.Name = Name;
+            this.id = Id;
+            this.name = Name;
         }
 
         public JsonValue ToJson()
         {
             dynamic json = new ExpandoObject();
-            json.name = this.Name;
-            json.type = this.Type;
+            json.name = this.name;
+            json.type = this.type;
 
             json = AddJsonProperties(json);
 
@@ -40,23 +40,23 @@ namespace Geckoboard
 
     public class OptionalField : Field
     {
-        public bool Optional;
+        public bool optional;
 
         public OptionalField(string Id, string Name, bool Optional) : base(Id, Name)
         {
-            this.Optional = Optional;
+            this.optional = Optional;
         }
 
         protected override ExpandoObject AddJsonProperties(dynamic json)
         {
-            json.optional = this.Optional;
+            json.optional = this.optional;
             return json;
         }
     }
 
     public class StringField : Field
     {
-        public override string Type
+        public override string type
         {
             get { return "string"; }
         }
@@ -66,7 +66,7 @@ namespace Geckoboard
 
     public class NumberField : OptionalField
     {
-        public override string Type
+        public override string type
         {
             get { return "number"; }
         }
@@ -76,7 +76,7 @@ namespace Geckoboard
 
     public class DateField : Field
     {
-        public override string Type
+        public override string type
         {
             get { return "date"; }
         }
@@ -86,7 +86,7 @@ namespace Geckoboard
 
     public class DateTimeField : Field
     {
-        public override string Type
+        public override string type
         {
             get { return "datetime"; }
         }
@@ -96,7 +96,7 @@ namespace Geckoboard
 
     public class PercentageField : OptionalField
     {
-        public override string Type
+        public override string type
         {
             get { return "percentage"; }
         }
@@ -106,7 +106,7 @@ namespace Geckoboard
 
     public class MoneyField : OptionalField
     {
-        public override string Type
+        public override string type
         {
             get { return "money"; }
         }

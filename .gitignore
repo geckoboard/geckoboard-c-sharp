@@ -1,2 +1,6 @@
 .DS_Store
 packages
+.vs
+obj
+Debug
+bin
